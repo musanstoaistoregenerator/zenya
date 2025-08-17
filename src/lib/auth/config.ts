@@ -21,7 +21,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   },
 });
 
-export const authOptions: NextAuthOptions = {
+const authConfig: NextAuthOptions = {
   adapter: SupabaseAdapter({
     url: supabaseUrl,
     secret: supabaseServiceKey,
@@ -55,7 +55,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.id as string;
       }
       return session;
@@ -63,8 +63,11 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup',
     error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+export { authConfig };
+export const authOptions = authConfig;
+export default authConfig;

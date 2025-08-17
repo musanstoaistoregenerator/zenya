@@ -44,6 +44,7 @@ export interface Database {
           product_url: string;
           platform: string;
           domain: string | null;
+          deployment_url: string | null;
           status: string;
           success_score: number | null;
           market_research: any | null;
@@ -61,6 +62,7 @@ export interface Database {
           product_url: string;
           platform: string;
           domain?: string | null;
+          deployment_url?: string | null;
           status?: string;
           success_score?: number | null;
           market_research?: any | null;
@@ -78,6 +80,7 @@ export interface Database {
           product_url?: string;
           platform?: string;
           domain?: string | null;
+          deployment_url?: string | null;
           status?: string;
           success_score?: number | null;
           market_research?: any | null;

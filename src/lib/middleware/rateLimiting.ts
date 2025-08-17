@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authConfig } from '../auth/config';
-import { createServerClient } from '../supabase/server';
+import { createServerSupabaseClient } from '../supabase/server';
 
 export interface RateLimitConfig {
   maxRequests: number;
@@ -64,7 +64,7 @@ export class RateLimiter {
         };
       }
 
-      const supabase = createServerClient();
+      const supabase = await createServerSupabaseClient();
       const userEmail = session.user.email;
 
       // Get user data and current plan
@@ -201,7 +201,7 @@ export class RateLimiter {
       const session = await getServerSession(authConfig);
       if (!session?.user?.email) return;
 
-      const supabase = createServerClient();
+      const supabase = await createServerSupabaseClient();
       
       // Get user ID
       const { data: user } = await supabase
@@ -290,7 +290,7 @@ export async function withRateLimit(
 // Helper function to get user quota information
 export async function getUserQuota(userEmail: string): Promise<UserQuota | null> {
   try {
-    const supabase = createServerClient();
+    const supabase = await createServerSupabaseClient();
     
     const { data: user, error } = await supabase
       .from('users')
@@ -317,7 +317,7 @@ export async function getUserUsageStats(userEmail: string): Promise<{
   quota: UserQuota;
 } | null> {
   try {
-    const supabase = createServerClient();
+    const supabase = await createServerSupabaseClient();
     
     const { data: user, error: userError } = await supabase
       .from('users')

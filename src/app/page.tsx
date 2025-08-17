@@ -7,14 +7,14 @@ import Footer from '../components/footer';
 function SuccessStoriesGrid() {
   const [showAll, setShowAll] = useState(false);
   const [visibleItems, setVisibleItems] = useState(new Set());
-  const observerRef = useRef(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setVisibleItems(prev => new Set([...prev, entry.target.dataset.index]));
+            setVisibleItems(prev => new Set([...prev, (entry.target as HTMLElement).dataset.index]));
           }
         });
       },
@@ -37,9 +37,10 @@ function SuccessStoriesGrid() {
     });
 
     return () => {
-      if (observerRef.current) {
+      const observer = observerRef.current;
+      if (observer) {
         elements.forEach((el) => {
-          observerRef.current.unobserve(el);
+          observer.unobserve(el);
         });
       }
     };
