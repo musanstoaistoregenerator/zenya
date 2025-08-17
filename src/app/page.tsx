@@ -22,8 +22,9 @@ function SuccessStoriesGrid() {
     );
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+      const observer = observerRef.current;
+      if (observer) {
+        observer.disconnect();
       }
     };
   }, []);
@@ -172,31 +173,29 @@ function SuccessStoriesGrid() {
 // Animation Hook
 function useScrollAnimation() {
   const [visibleSections, setVisibleSections] = useState(new Set());
-  const observerRef = useRef(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setVisibleSections(prev => new Set([...prev, entry.target.dataset.section]));
+            setVisibleSections(prev => new Set([...prev, (entry.target as HTMLElement).dataset.section]));
           }
         });
       },
       { threshold: 0.1 }
     );
+    
+    observerRef.current = observer;
 
     const sections = document.querySelectorAll('[data-section]');
     sections.forEach((section) => {
-      if (observerRef.current) {
-        observerRef.current.observe(section);
-      }
+      observer.observe(section);
     });
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
+      observer.disconnect();
     };
   }, []);
 

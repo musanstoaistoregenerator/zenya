@@ -101,7 +101,7 @@ export class ShopifyDeployer {
     try {
       const response = await this.makeShopifyRequest('POST', '/admin/api/2023-10/products.json', productPayload);
       
-      if (response.product) {
+      if (response.product && typeof response.product === 'object' && 'id' in response.product && response.product.id) {
         return {
           success: true,
           productId: response.product.id.toString()

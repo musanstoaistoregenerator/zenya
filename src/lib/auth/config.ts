@@ -4,6 +4,25 @@ import GoogleProvider from 'next-auth/providers/google';
 // import EmailProvider from 'next-auth/providers/email'; // DISABLED - No email functionality needed
 import { createClient } from '@supabase/supabase-js';
 
+// Extend the built-in session types
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+  
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  }
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 

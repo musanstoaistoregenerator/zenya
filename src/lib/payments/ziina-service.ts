@@ -18,6 +18,13 @@ export interface ZiinaPaymentResponse {
   checkout_url?: string;
   status?: 'pending' | 'completed' | 'failed' | 'cancelled';
   error?: string;
+  subscription_id?: string;
+  amount?: number;
+  currency?: string;
+  customer?: {
+    email?: string;
+    name?: string;
+  };
 }
 
 export interface ZiinaSubscriptionRequest {
