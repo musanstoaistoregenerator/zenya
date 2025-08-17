@@ -4,11 +4,10 @@
   command = "npm install && npm run build && npm run export"
   # Directory to publish (Next.js static export output)
   publish = "out"
-  # Node.js version
-  environment = { NODE_VERSION = "18" }
 
 [build.environment]
   # Build-time environment variables
+  NODE_VERSION = "18"
   NODE_ENV = "production"
   NEXT_TELEMETRY_DISABLED = "1"
 
