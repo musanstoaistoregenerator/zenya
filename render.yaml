@@ -1,0 +1,77 @@
+# Render deployment configuration for StoreForge AI
+# This file configures the backend API deployment on Render
+# 
+# Setup Instructions:
+# 1. Create a new Web Service on Render
+# 2. Connect your GitHub repository
+# 3. Create environment variable group 'storeforge-env' in Render dashboard
+# 4. Add all required environment variables to the group
+# 5. Deploy the service
+
+services:
+  - type: web
+    name: storeforge-ai-backend
+    env: node
+    plan: starter  # Can upgrade to standard or pro for better performance
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    # Auto-deploy on push to main branch
+    autoDeploy: true
+    branch: main
+    healthCheckPath: /api/health
+    # Environment variables from group
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        fromGroup: storeforge-env
+      - key: NEXTAUTH_URL
+        fromGroup: storeforge-env
+      - key: NEXTAUTH_SECRET
+        fromGroup: storeforge-env
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        fromGroup: storeforge-env
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        fromGroup: storeforge-env
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        fromGroup: storeforge-env
+      - key: OPENAI_API_KEY
+        fromGroup: storeforge-env
+      - key: OPENAI_MODEL
+        value: gpt-4o-mini
+      - key: OPENAI_BASE_URL
+        value: https://api.openai.com/v1
+      - key: SCRAPINGBEE_API_KEY
+        fromGroup: storeforge-env
+      - key: APIFY_API_TOKEN
+        fromGroup: storeforge-env
+      - key: ZIINA_SECRET_KEY
+        fromGroup: storeforge-env
+      - key: ZIINA_WEBHOOK_SECRET
+        fromGroup: storeforge-env
+      - key: SHOPIFY_API_KEY
+        fromGroup: storeforge-env
+      - key: SHOPIFY_API_SECRET
+        fromGroup: storeforge-env
+      - key: GOOGLE_CLIENT_ID
+        fromGroup: storeforge-env
+      - key: GOOGLE_CLIENT_SECRET
+        fromGroup: storeforge-env
+
+# Environment variable groups (to be configured in Render dashboard)
+# Create a group named 'storeforge-env' with the following variables:
+# - NEXT_PUBLIC_APP_URL: https://your-render-app.onrender.com
+# - NEXTAUTH_URL: https://your-render-app.onrender.com
+# - NEXTAUTH_SECRET: (generate a secure random string)
+# - NEXT_PUBLIC_SUPABASE_URL: (your Supabase project URL)
+# - NEXT_PUBLIC_SUPABASE_ANON_KEY: (your Supabase anon key)
+# - SUPABASE_SERVICE_ROLE_KEY: (your Supabase service role key)
+# - OPENAI_API_KEY: (your OpenAI API key)
+# - SCRAPINGBEE_API_KEY: (your ScrapingBee API key)
+# - APIFY_API_TOKEN: (your Apify API token)
+# - ZIINA_SECRET_KEY: (your Ziina secret key)
+# - ZIINA_WEBHOOK_SECRET: (your Ziina webhook secret)
+# - SHOPIFY_API_KEY: (your Shopify API key)
+# - SHOPIFY_API_SECRET: (your Shopify API secret)
+# - GOOGLE_CLIENT_ID: (your Google OAuth client ID)
+# - GOOGLE_CLIENT_SECRET: (your Google OAuth client secret)

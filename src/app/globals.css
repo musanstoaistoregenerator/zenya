@@ -1,5 +1,120 @@
 @import "tailwindcss";
 
+/* Custom animations for loading screen */
+@keyframes zoomInFromButton {
+  0% {
+    transform: scale(0.05);
+    opacity: 0;
+    border-radius: 1rem;
+    backdrop-filter: blur(0px);
+  }
+  25% {
+    transform: scale(0.2);
+    opacity: 0.3;
+    border-radius: 0.75rem;
+    backdrop-filter: blur(2px);
+  }
+  50% {
+    transform: scale(0.6);
+    opacity: 0.7;
+    border-radius: 0.5rem;
+    backdrop-filter: blur(4px);
+  }
+  75% {
+    transform: scale(0.9);
+    opacity: 0.9;
+    border-radius: 0.25rem;
+    backdrop-filter: blur(6px);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    border-radius: 0;
+    backdrop-filter: blur(0px);
+  }
+}
+
+@keyframes buttonPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+@keyframes smoothZoomIn {
+  0% {
+    transform: scale(0.05) rotate(-5deg);
+    opacity: 0;
+    filter: blur(10px);
+    border-radius: 1rem;
+  }
+  20% {
+    transform: scale(0.2) rotate(-2deg);
+    opacity: 0.3;
+    filter: blur(8px);
+    border-radius: 0.75rem;
+  }
+  40% {
+    transform: scale(0.5) rotate(1deg);
+    opacity: 0.6;
+    filter: blur(5px);
+    border-radius: 0.5rem;
+  }
+  60% {
+    transform: scale(0.8) rotate(0deg);
+    opacity: 0.8;
+    filter: blur(2px);
+    border-radius: 0.25rem;
+  }
+  80% {
+    transform: scale(1.02) rotate(0deg);
+    opacity: 0.95;
+    filter: blur(1px);
+    border-radius: 0.125rem;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    filter: blur(0px);
+    border-radius: 0;
+  }
+}
+
+@keyframes build-up {
+  0% { transform: translateY(100px) scale(0.8) rotate(0deg); opacity: 0; }
+  50% { transform: translateY(-5px) scale(1.05) rotate(1deg); opacity: 0.4; }
+  100% { transform: translateY(0) scale(1) rotate(0deg); opacity: 0.3; }
+}
+
+@keyframes crane-swing {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+@keyframes float-tool {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(1deg); }
+  50% { transform: translateY(-3px) rotate(-0.5deg); }
+  75% { transform: translateY(-10px) rotate(0.5deg); }
+}
+
+.zoom-in-animation {
+  animation: smoothZoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform-origin: var(--button-x, 50%) var(--button-y, 50%);
+}
+
+.button-pulse {
+  animation: buttonPulse 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
