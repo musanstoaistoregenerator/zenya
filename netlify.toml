@@ -1,6 +1,6 @@
 # Netlify deployment configuration for StoreForge AI frontend
 [build]
-  command = "npm install && npm run build && npm run export"
+  command = "npm install && npm run build"
   publish = "out"
 
 [build.environment]
