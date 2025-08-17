@@ -1,14 +1,10 @@
 # Netlify deployment configuration for StoreForge AI frontend
 [build]
-  # Build command for Next.js static export
-  command = "npm install && npm run build && npm run export"
-  # Directory to publish (Next.js static export output)
+  command = "npm install && npm run build"
   publish = "out"
-  # Node.js version
-  environment = { NODE_VERSION = "18" }
 
 [build.environment]
-  # Build-time environment variables
+  NODE_VERSION = "18"
   NODE_ENV = "production"
   NEXT_TELEMETRY_DISABLED = "1"
 
@@ -17,7 +13,6 @@
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["admin", "editor"], Country = ["!China"]}
 
 # API proxy to Render backend
 [[redirects]]
@@ -31,37 +26,11 @@
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://api.openai.com https://*.supabase.co https://your-render-app.onrender.com;"
 
 # Cache static assets
-[[headers]]
-  for = "/static/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
 [[headers]]
   for = "/_next/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
-
-# Environment variables (configure in Netlify dashboard)
-# NEXT_PUBLIC_APP_URL: https://your-netlify-app.netlify.app
-# NEXT_PUBLIC_SUPABASE_URL: (your Supabase project URL)
-# NEXT_PUBLIC_SUPABASE_ANON_KEY: (your Supabase anon key)
-# NEXT_PUBLIC_API_BASE_URL: https://your-render-app.onrender.com
-
-# Functions (if using Netlify Functions for some API endpoints)
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-# Form handling
-[forms]
-  spam_protection = true
-
-# Large Media (for handling large assets)
-[large_media]
-  git_lfs = true
