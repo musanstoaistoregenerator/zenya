@@ -68,7 +68,7 @@ export class ZiinaUtils {
     metadata = {}
   }: {
     amount: number;
-    currency?: string;
+    currency?: 'AED' | 'SAR' | 'USD';
     customerEmail: string;
     customerName: string;
     productType: 'theme' | 'subscription' | 'custom';
@@ -148,10 +148,8 @@ export class ZiinaUtils {
 
       const subscriptionRequest = {
         plan_id: planId,
-        customer: {
-          email: customerEmail,
-          name: customerName
-        },
+        customer_email: customerEmail,
+        customer_name: customerName,
         metadata: {
           ...metadata,
           source: 'storeforge-ai'

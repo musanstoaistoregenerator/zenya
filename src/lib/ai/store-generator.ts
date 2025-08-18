@@ -260,7 +260,7 @@ export class StoreGenerator {
     - Target audience size
     `;
 
-    const content = await callOpenRouter(prompt, 0.3);
+    const content = await callOpenAI(prompt, 0.3);
 
     try {
       return JSON.parse(content);

@@ -4,6 +4,25 @@ import GoogleProvider from 'next-auth/providers/google';
 // import EmailProvider from 'next-auth/providers/email'; // DISABLED - No email functionality needed
 import { createClient } from '@supabase/supabase-js';
 
+// Extend the built-in session types
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      id: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+    };
+  }
+  
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  }
+}
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
@@ -21,7 +40,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   },
 });
 
-export const authOptions: NextAuthOptions = {
+const authConfig: NextAuthOptions = {
   adapter: SupabaseAdapter({
     url: supabaseUrl,
     secret: supabaseServiceKey,
@@ -55,7 +74,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (token) {
+      if (token && session.user) {
         session.user.id = token.id as string;
       }
       return session;
@@ -63,8 +82,11 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup',
     error: '/auth/error',
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
+
+export { authConfig };
+export const authOptions = authConfig;
+export default authConfig;

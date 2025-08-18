@@ -106,7 +106,7 @@ export async function middleware(request: NextRequest) {
 
     if (!token?.sub) {
       // For unauthenticated requests, apply IP-based rate limiting
-      const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+      const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
       const response = NextResponse.json(
         { error: 'Authentication required for API access' },
         { status: 401 }
@@ -115,7 +115,7 @@ export async function middleware(request: NextRequest) {
     }
 
     const userId = token.sub;
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     const userAgent = request.headers.get('user-agent') || 'unknown';
     
     // Check rate limit
